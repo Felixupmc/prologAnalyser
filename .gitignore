@@ -1,0 +1,12 @@
+*~
+_build
+__pycache__
+java/bin
+*.class
+*.pyc
+*.cma
+*.cmo
+*.cmx
+*.cmi
+*.exe
+/bin/

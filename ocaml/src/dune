@@ -1,0 +1,4 @@
+(ocamllex lexer)
+(menhir (modules parser))
+(library (name libparser) (modules ast lexer parser parsing))
+(executable (name main) (libraries libparser) (modules main))
