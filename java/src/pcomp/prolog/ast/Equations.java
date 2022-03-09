@@ -33,7 +33,8 @@ public class Equations {
 	}
 	
 	public Environnement unify(Environnement env) {
-		for (Term[] term : system) {
+		for (int t=0; t<system.size(); t++) {
+			Term[] term = system.get(t);
 			//on applique l'environnmenet
 			term[0].accept((TermVisitor<Term>) new Subst(env));
 			term[1].accept((TermVisitor<Term>) new Subst(env));			
