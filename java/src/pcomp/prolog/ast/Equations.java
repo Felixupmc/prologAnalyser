@@ -49,7 +49,7 @@ public class Equations {
 			}else { //ou on decompose les termes
 				Predicate tp1 = ((TermPredicate) term[0]).getPredicate();
 				Predicate tp2 = ((TermPredicate) term[1]).getPredicate();
-				if (tp1.equals(tp2)) {
+				if (tp1.getSymbol() == tp2.getSymbol() && tp1.getArguments().size() == tp2.getArguments().size()) {
 					system.remove(term);
 					for (int i=0; i<tp1.getArguments().size(); i++) {
 						this.add(tp1.getArguments().get(i), tp2.getArguments().get(i));
