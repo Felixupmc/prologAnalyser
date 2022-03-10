@@ -27,38 +27,131 @@ public class Equations {
 			sb.append(equation[1].toString());
 			sb.append("; ");
 		}
-		sb.delete(sb.length()-2, sb.length());
+		//sb.delete(sb.length()-2, sb.length());
 		sb.append('}');
 		return sb.toString();
 	}
 	
-	public Environnement unify(Environnement env) {
-		for (int t=0; t<system.size(); t++) {
-			Term[] term = system.get(t);
-			//on applique l'environnmenet
-			term[0].accept((TermVisitor<Term>) new Subst(env));
-			term[1].accept((TermVisitor<Term>) new Subst(env));			
-			//on verifie si on peut ajouter une substitution a env
-			if (term[0] instanceof TermVariable) {
-				if (term[1].accept(new OccurCheck((TermVariable) term[0]))) {
-					env.add((TermVariable) term[0], term[1]);
-				}
-			}else if (term[1] instanceof TermVariable) {
-				if (term[0].accept(new OccurCheck((TermVariable) term[1]))) {
-					env.add((TermVariable) term[1], term[0]);
-				}
-			}else { //ou on decompose les termes
-				Predicate tp1 = ((TermPredicate) term[0]).getPredicate();
-				Predicate tp2 = ((TermPredicate) term[1]).getPredicate();
-				if (tp1.getSymbol() == tp2.getSymbol() && tp1.getArguments().size() == tp2.getArguments().size()) {
-					system.remove(term);
-					for (int i=0; i<tp1.getArguments().size(); i++) {
-						this.add(tp1.getArguments().get(i), tp2.getArguments().get(i));
-					}
-				}
-			}			
+	
+	//les regles de transformation pour l'unification
+	public boolean effacer() {
+		List<Term[]> toRemove = new ArrayList<Term[]>();
+		
+		for (Term[] equation : system) {
+			Term left  = equation[0];
+			Term right = equation[1];
+			//si les deux termes sont egaux
+			if (left.equals(right)) {
+				//on enleve cette equation du systeme
+				toRemove.add(equation);
+			}
 		}
 		
+		if (toRemove.isEmpty()) {
+			return false;
+		}
+		system.removeAll(toRemove);
+		return true;
+
+	}
+	
+	public boolean orienter() {
+		boolean changesMade = false;
+		
+		for (Term[] equation : system) {
+			Term left  = equation[0];
+			Term right = equation[1];
+			//si right est une variable et left ne l'est pas
+			if (right instanceof TermVariable && !(left instanceof TermVariable)) {
+				//on inverse les deux termes
+				equation[0] = right;
+				equation[1] = left;
+				changesMade = true;
+			}
+		}
+		
+		return changesMade;
+	}
+	
+	public boolean decomposer() {
+		boolean changesMade = false;
+		List<Term[]> res = new ArrayList<Term[]>();
+		
+		for (Term[] equation : system) {
+			Term left = equation[0];
+			Term right = equation[1];
+			//si les deux termes sont deux memes predicat
+			if (left instanceof TermPredicate && right instanceof TermPredicate) {
+				Predicate leftp = ((TermPredicate) left).getPredicate();
+				Predicate rightp = ((TermPredicate) right).getPredicate();
+				if (leftp.getSymbol() == rightp.getSymbol() && leftp.getArguments().size() == rightp.getArguments().size()) {
+					// on decompose les deux fonctions
+					for (int i=0; i<leftp.getArguments().size(); i++) {
+						Term[] tmp = new Term[2];
+						tmp[0] = leftp.getArguments().get(i);
+						tmp[1] = rightp.getArguments().get(i);
+						
+						res.add(tmp);
+					}
+					changesMade = true;
+				}else {
+					res.add(equation);
+				}
+			}
+		}
+		system = res;
+		return changesMade;
+	}
+	
+	public boolean remplacer(Environnement env) {
+		boolean changesMade = false;
+		
+		for (int t=0; t<system.size(); t++) {
+			Term[] term = system.get(t);
+		    //on applique l'environnmenet
+			Term left = term[0].accept((TermVisitor<Term>) new Subst(env));
+		    Term right = term[1].accept((TermVisitor<Term>) new Subst(env));
+		    changesMade = changesMade || !(left.equals(term[0])) || !(right.equals(term[1]));
+		    term[0] = left;
+		    term[1] = right;
+		}
+		  
+		return changesMade;
+	}	
+	
+	
+	public boolean ajoutSubst(Environnement env) throws OccurCheckException {
+		boolean changesMade = false;
+		
+		for (Term[] equation : system) {
+			Term left = equation[0];
+			Term right = equation[1];
+			
+			if (left instanceof TermVariable && !env.contains(left)) {
+				if (right.accept(new OccurCheck((TermVariable) left))) {
+					throw new OccurCheckException("OccurcheckException : "+equation, (TermVariable) left);
+				}
+				env.add((TermVariable) left, right);
+				changesMade = true;
+			}
+		}
+		return changesMade;
+	}
+	
+	public Environnement unify(Environnement env) {
+		boolean changesMade = true;
+		while(changesMade && !system.isEmpty()) {
+			changesMade = false;
+			remplacer(env);
+			changesMade = changesMade || decomposer();
+			changesMade = changesMade || effacer();
+			changesMade = changesMade || orienter();
+			try {
+				changesMade = changesMade || ajoutSubst(env);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return env;
 	}

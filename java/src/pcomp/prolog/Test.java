@@ -34,7 +34,7 @@ public class Test {
 		e.add(tp3, tp3);
 		System.out.println(e);
 		
-		 tv1 = new TermVariable("Z",new Position(0,0));
+		tv1 = new TermVariable("Z",new Position(0,0));
 		tv2 = new TermVariable("W",new Position(0,0));
 		TermVariable tv3 = new TermVariable("Y",new Position(0,0));
 
@@ -50,5 +50,10 @@ public class Test {
 		
 		System.out.println(env);
 		System.out.println(tp3.accept(new Subst(env)));
+		System.out.println("------------------------------------------");
+		Equations equation1 = Exercice7.equation1();
+		System.out.println(equation1);
+		System.out.println(equation1.unify(new Environnement()));
+		System.out.println(equation1);
 	}
 }

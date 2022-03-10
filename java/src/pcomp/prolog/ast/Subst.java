@@ -15,9 +15,7 @@ public class Subst implements TermVisitor<Term> {
 	public Term visit(TermVariable termVariable) {
 		if (env.contains(termVariable)) {
 			Term term = env.get(termVariable);
-			if (! term.accept(new OccurCheck(termVariable))) {
-				return term.accept(this);
-			}
+			return term.accept(this);
 		}
 		return termVariable;
 	}

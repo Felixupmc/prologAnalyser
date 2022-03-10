@@ -1,7 +1,13 @@
-package pcomp.prolog.ast;
+package pcomp.prolog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pcomp.prolog.ast.Equations;
+import pcomp.prolog.ast.Predicate;
+import pcomp.prolog.ast.Term;
+import pcomp.prolog.ast.TermPredicate;
+import pcomp.prolog.ast.TermVariable;
 
 public class Exercice7 {
 	public static TermPredicate a,b,f,g,h,k,q,r,p;
@@ -19,6 +25,7 @@ public class Exercice7 {
 	}
 
 	public static Equations equation1() {
+		init();
 		Term left,right;
 		List<Term> tmp = new ArrayList<Term>();
 		tmp.add(w);
@@ -58,10 +65,4 @@ public class Exercice7 {
 		s.add(left, right);
 		return s;
 	}
-	
-	public static void main(String[] args) {
-		init();
-		System.out.println(equation1());
-	}
-
 }

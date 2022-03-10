@@ -49,7 +49,7 @@ public class Environnement {
 			sb.append(entry.getValue().toString());
 			sb.append("; ");
 		}
-		sb.delete(sb.length()-2, sb.length());
+		//sb.delete(sb.length()-2, sb.length());
 		sb.append('}');
 		return sb.toString();
 	}
