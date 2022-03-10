@@ -1,7 +1,5 @@
 package pcomp.prolog.ast;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class OccurCheck implements TermVisitor<Boolean> {
 	private TermVariable x;
@@ -17,19 +15,11 @@ public class OccurCheck implements TermVisitor<Boolean> {
 
 	@Override
 	public Boolean visit(TermPredicate termPredicate) {
-		List<Term> args = new ArrayList<Term>();
+		//pour chaque argument du predicat
 		for (Term arg : termPredicate.getPredicate().getArguments()) {
-			//si t est une varible
-			if (arg instanceof TermVariable) {
-				if (x.equals((TermVariable)arg)) {
-					return true;
-				}
-			}else {
-				if (arg.accept(this)) {
-					return true;
-				}
-			}
-			
+			if (arg.accept(this)) {
+				return true;
+			}			
 		}
 		return false;
 	}
