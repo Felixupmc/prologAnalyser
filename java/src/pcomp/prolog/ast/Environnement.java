@@ -15,7 +15,6 @@ public class Environnement {
 	public Term add(String var, Term t) {
 		return env.put(var, t);
 	}
-	
 	public Term add(TermVariable var, Term t) {
 		return add(var.getName(), t);
 	}
@@ -23,7 +22,6 @@ public class Environnement {
 	public Term get(String var) {
 		return env.get(var);
 	}
-	
 	public Term get(TermVariable var) {
 		return get(var.getName());
 	}
@@ -38,6 +36,10 @@ public class Environnement {
 	
 	public boolean contains(Object key) {
 		return env.containsKey(key);
+	}
+	
+	public void putAll(Environnement env) {
+		this.env.putAll(env.env);
 	}
 	
 	public String toString() {
