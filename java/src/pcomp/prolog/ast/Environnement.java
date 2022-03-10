@@ -42,14 +42,18 @@ public class Environnement {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		boolean first = true;
 		sb.append('{');
 		for (Entry<String, Term> entry : env.entrySet()) {
+			if (first) {
+				first = false;
+			}else {
+				sb.append("; ");
+			}
 			sb.append(entry.getKey());
 			sb.append(" -> ");
 			sb.append(entry.getValue().toString());
-			sb.append("; ");
 		}
-		//sb.delete(sb.length()-2, sb.length());
 		sb.append('}');
 		return sb.toString();
 	}

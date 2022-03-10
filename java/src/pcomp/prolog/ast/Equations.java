@@ -20,14 +20,18 @@ public class Equations {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		boolean first = true;
 		sb.append('{');
 		for (Term[] equation : system) {
+			if (first) {
+				first = false;
+			}else {
+				sb.append("; ");
+			}
 			sb.append(equation[0].toString());
 			sb.append(" = ");
 			sb.append(equation[1].toString());
-			sb.append("; ");
 		}
-		//sb.delete(sb.length()-2, sb.length());
 		sb.append('}');
 		return sb.toString();
 	}
@@ -56,21 +60,28 @@ public class Equations {
 	}
 	
 	public boolean orienter() {
-		boolean changesMade = false;
-		
+		List<Term[]> toRemove = new ArrayList<Term[]>();
 		for (Term[] equation : system) {
 			Term left  = equation[0];
 			Term right = equation[1];
 			//si right est une variable et left ne l'est pas
 			if (right instanceof TermVariable && !(left instanceof TermVariable)) {
-				//on inverse les deux termes
-				equation[0] = right;
-				equation[1] = left;
-				changesMade = true;
+				toRemove.add(equation);
 			}
 		}
 		
-		return changesMade;
+		if (toRemove.isEmpty()) {
+			return false;
+		}
+		system.removeAll(toRemove);
+		for (Term[] equation : toRemove) {
+			Term[] term = new Term[2];
+			term[0] = equation[1];
+			term[1] = equation[0];
+			
+			system.add(term);
+		}
+		return true;
 	}
 	
 	public boolean decomposer() {
@@ -84,7 +95,7 @@ public class Equations {
 			if (left instanceof TermPredicate && right instanceof TermPredicate) {
 				Predicate leftp = ((TermPredicate) left).getPredicate();
 				Predicate rightp = ((TermPredicate) right).getPredicate();
-				if (leftp.getSymbol() == rightp.getSymbol() && leftp.getArguments().size() == rightp.getArguments().size()) {
+				if (!(leftp.getArguments().isEmpty()) && leftp.getSymbol() == rightp.getSymbol() && leftp.getArguments().size() == rightp.getArguments().size()) {
 					// on decompose les deux fonctions
 					for (int i=0; i<leftp.getArguments().size(); i++) {
 						Term[] tmp = new Term[2];
@@ -97,6 +108,8 @@ public class Equations {
 				}else {
 					res.add(equation);
 				}
+			}else {
+				res.add(equation);
 			}
 		}
 		system = res;
@@ -143,11 +156,11 @@ public class Equations {
 		while(changesMade && !system.isEmpty()) {
 			changesMade = false;
 			remplacer(env);
-			changesMade = changesMade || decomposer();
-			changesMade = changesMade || effacer();
-			changesMade = changesMade || orienter();
+			changesMade = decomposer() || changesMade;
+			changesMade = effacer() || changesMade;
+			changesMade = orienter() || changesMade;
 			try {
-				changesMade = changesMade || ajoutSubst(env);
+				changesMade = ajoutSubst(env) || changesMade;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

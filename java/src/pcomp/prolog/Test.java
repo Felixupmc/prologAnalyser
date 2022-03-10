@@ -52,8 +52,6 @@ public class Test {
 		System.out.println(tp3.accept(new Subst(env)));
 		System.out.println("------------------------------------------");
 		Equations equation1 = Exercice7.equation1();
-		System.out.println(equation1);
-		System.out.println(equation1.unify(new Environnement()));
-		System.out.println(equation1);
+		System.out.println(equation1.unify(env));
 	}
 }
