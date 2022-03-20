@@ -75,7 +75,6 @@ public class DeclAssertion implements Decl {
 		return buf.toString();
 	}
 
-
 	// Interface du visiteur
 	//////////////////////////////////
 

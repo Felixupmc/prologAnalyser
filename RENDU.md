@@ -14,3 +14,14 @@ L'implémentation de subst se fait par une classe qui suit le desing pattern vis
 
 ### Qestion 5 :
 On écrit d'abord une méthode pour chaque opération possible, décomposer(), effacer(), orienter() et remplacer(), qui appliquent les transformations vues en cours. Si jamais l'occurcheck n'est pas respecté, alors une exception est levée, sinon l'algorithme continue tant que le système n'est pas vide et que des changements on eu lieut lors des appels des méthodes définies précédament.
+
+## Jalon 2 :
+### Question 1 :
+On part du principe que le premier element de la list de Decl dans Program est le fait (assertion) et que le deuxieme element est le but. On creer une Equations avec ces deux predicats que l'on transforme en TermPredicate et on fait l'unification sur un environement vide.
+
+### Question 2 :
+Comme pour la question 1 mais avec une étape en plus qui est de trouver le fait avec le meme symbole de prédicat que le but.
+
+### Question 3 :
+Pour chaque but trouvé, trouver le fait correspondant avec le meme symbole de predicat, puis ajouter dans les Equation ces deux Termes.
+Faire l'unification de toutes ces equations trouvé entre les faits et les buts.

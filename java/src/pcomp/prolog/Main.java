@@ -11,6 +11,8 @@ import java.io.IOException;
 
 import pcomp.prolog.ast.Program;
 import pcomp.prolog.parser.PrologParser;
+import pcomp.prolog.ast.Decl;
+import pcomp.prolog.ast.DeclRename;
 import pcomp.prolog.ast.Interpretes;
 
 /*
@@ -37,5 +39,8 @@ public class Main {
 		Program j2p1 = PrologParser.parseString("p(Z,h(Z,W),f(W)).?- p(f(X),h(Y,f(a)),Y).");
 		System.out.println(j2p1);
 		System.out.println(Interpretes.interprete0(j2p1));
+		for (Decl d : j2p1.getDeclarations()) {
+			System.out.println(d.accept(new DeclRename(1)));
+		}
 	}
 }
