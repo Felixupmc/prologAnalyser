@@ -5,6 +5,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+/*
+ * AST : classe des environnement
+ * 
+ * un environnement contient des remplacements a effectuer
+ */
 public class Environnement {
 	private Map<String, Term> env;
 	
