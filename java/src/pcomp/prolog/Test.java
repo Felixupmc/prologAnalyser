@@ -32,7 +32,7 @@ public class Test {
 		Equations e = new Equations();
 		e.add(tp3, tp3);
 		e.add(tp3, tp3);
-		System.out.println("Equations départ : " + e);
+		System.out.println(e);
 		
 		tv1 = new TermVariable("Z",new Position(0,0));
 		tv2 = new TermVariable("W",new Position(0,0));
@@ -48,10 +48,10 @@ public class Test {
 		env.add(tv1,tp1);
 		env.add(tv2,tv3);
 		
-		System.out.println("Environement départ : " + env);
-		System.out.println("tp3.accept(new Subst(env)) : " + tp3.accept(new Subst(env)));
+		System.out.println(env);
+		System.out.println(tp3.accept(new Subst(env)));
 		System.out.println("------------------------------------------");
 		Equations equation1 = Exercice7.equation1();
-		System.out.println("equation1.unify(env) : " + equation1.unify(env));
+		System.out.println(equation1.unify(env));
 	}
 }
