@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import pcomp.prolog.ast.Program;
 import pcomp.prolog.parser.PrologParser;
+import pcomp.prolog.ast.Interpretes;
 
 /*
  * Point d'entrée d'exemple : construction de l'arbre syntaxique abstrait (AST) à partir
@@ -32,5 +33,9 @@ public class Main {
 
 		Program p4 = PrologParser.parseFile("exemples/test_list.pl");
 		System.out.println(p4);
+		
+		Program j2p1 = PrologParser.parseString("p(Z,h(Z,W),f(W)).?- p(f(X),h(Y,f(a)),Y).");
+		System.out.println(j2p1);
+		System.out.println(Interpretes.interprete0(j2p1));
 	}
 }

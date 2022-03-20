@@ -3,6 +3,13 @@ package pcomp.prolog.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * AST : classe substitution
+ * 
+ * applique des remplacements à un terme
+ * en suivant le desing pattern visiteur 
+ */
+
 public class Subst implements TermVisitor<Term> {
 	private Environnement env;
 	

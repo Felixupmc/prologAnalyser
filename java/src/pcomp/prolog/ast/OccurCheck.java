@@ -1,5 +1,11 @@
 package pcomp.prolog.ast;
 
+/*
+ * AST: classe occurcheck
+ * 
+ * realise un occcurcheck d'une variable sur un terme
+ * cette classe suit le desing pattern visiteur
+ */
 
 public class OccurCheck implements TermVisitor<Boolean> {
 	private TermVariable x;
