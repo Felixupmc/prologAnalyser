@@ -1,4 +1,5 @@
 _Documentation du rendu de projet, à remplir._
+
 ##Jalon 1 :
 ### Question 1 :
 Pour représenter les equations, on crée une classe Equations qui possède en attribut, une liste de couple de termes. On utilise ici, plus précisémen, la classe ArrayList qui permet de gérer plus facilement des listes.
