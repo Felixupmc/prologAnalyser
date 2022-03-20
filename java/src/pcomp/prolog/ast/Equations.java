@@ -3,6 +3,11 @@ package pcomp.prolog.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * AST : classe des equations
+ * 
+ * represente un systeme d'equations
+ */
 public class Equations {
 	private List<Term[]> system;
 	
@@ -95,7 +100,7 @@ public class Equations {
 			if (left instanceof TermPredicate && right instanceof TermPredicate) {
 				Predicate leftp = ((TermPredicate) left).getPredicate();
 				Predicate rightp = ((TermPredicate) right).getPredicate();
-				if (!(leftp.getArguments().isEmpty()) && leftp.getSymbol() == rightp.getSymbol() && leftp.getArguments().size() == rightp.getArguments().size()) {
+				if (!(leftp.getArguments().isEmpty()) && leftp.getSymbol().equals(rightp.getSymbol()) && leftp.getArguments().size() == rightp.getArguments().size()) {
 					// on decompose les deux fonctions
 					for (int i=0; i<leftp.getArguments().size(); i++) {
 						Term[] tmp = new Term[2];
@@ -152,20 +157,34 @@ public class Equations {
 	}
 	
 	public Environnement unify(Environnement env) {
-		boolean changesMade = true;
-		while(changesMade && !system.isEmpty()) {
-			changesMade = false;
-			remplacer(env);
-			changesMade = decomposer() || changesMade;
-			changesMade = effacer() || changesMade;
-			changesMade = orienter() || changesMade;
+		if (system.isEmpty()) {
+			return env;
+		}
+
+		boolean changesMade = false;
+		remplacer(env);
+		
+		if (!changesMade) {
+			changesMade = decomposer();
+			
+		}if (!changesMade) {
+			changesMade = effacer();
+			
+		}if (!changesMade) {
+			changesMade = orienter();
+			
+		}if (!changesMade) {
 			try {
-				changesMade = ajoutSubst(env) || changesMade;
+				changesMade = ajoutSubst(env);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
-		return env;
+		if (changesMade) {
+			return unify(env);
+		}else {
+			return env;
+		}
 	}
 }
