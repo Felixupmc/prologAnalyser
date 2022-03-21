@@ -76,7 +76,7 @@ public class Interpretes {
                     Equations eq = new Equations();
                     eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(p,p.getPosition()));
                     env.putAll(eq.unify(env));
-                    return fait.getPredicates();
+                    return fait.getPredicates();//TODO : rename all predicates
                 }
         	}
         }
