@@ -47,6 +47,10 @@ public class Environnement {
 		this.env.putAll(env.env);
 	}
 	
+	public boolean isEmpty() {
+		return env.isEmpty();
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
