@@ -3,8 +3,6 @@ package pcomp.prolog.ast;
 import java.util.ArrayList;
 import java.util.List;
 
-import etu.Environement;
-
 public class Interpretes {
     
     public static Environnement interprete0(Program prog) {
