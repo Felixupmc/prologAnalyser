@@ -71,14 +71,16 @@ public class Interpretes {
     
     public static List<Predicate> choose(int n, Environnement env, DeclGoal but, List<DeclAssertion> regles) throws Exception {
         for(DeclAssertion fait:regles) {
-            if(fait.getHead().getSymbol().equals(but.getPredicates().get(0).getSymbol())) {
-                DeclRename visitor = new DeclRename(n);
-                DeclAssertion faitPrim = visitor.visit(fait);
-                Equations eq = new Equations();
-                eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(but.getPredicates().get(0),but.getPosition()));
-                env.putAll(eq.unify(env));
-                return fait.getPredicates();
-            }
+        	for(Predicate p:but.getPredicates()) {
+        		if(fait.getHead().getSymbol().equals(p.getSymbol())) {
+                    DeclRename visitor = new DeclRename(n);
+                    DeclAssertion faitPrim = visitor.visit(fait);
+                    Equations eq = new Equations();
+                    eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(p,p.getPosition()));
+                    env.putAll(eq.unify(env));
+                    return fait.getPredicates();
+                }
+        	}
         }
         throw new Exception(" aucune rÃ¨gle ne permet de faire lâ€™unification");
     }
@@ -110,19 +112,5 @@ public class Interpretes {
     	return solve(buts, faits);
     }
     
-    
-    public static Environnement choose(int n, Environnement env, DeclGoal but, List<Decl> regles) throws Exception {
-    	for(Decl dec:regles) {
-    		DeclAssertion fait = (DeclAssertion)dec;
-    		if(fait.getHead().getSymbol().equals(but.getPredicates().get(0).getSymbol())) {
-    			DeclRename visitor = new DeclRename(n);
-    			DeclAssertion faitPrim = visitor.visit(fait);
-    	        Equations eq = new Equations();
-                eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(but.getPredicates().get(0),but.getPosition()));
-    			return eq.unify(env);
-    		}
-    	}
-    	throw new Exception(" aucune règle ne permet de faire l’unification");
-    }
     
 }
