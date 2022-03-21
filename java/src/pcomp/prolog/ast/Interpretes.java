@@ -3,6 +3,8 @@ package pcomp.prolog.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import etu.Environement;
+
 public class Interpretes {
     
     public static Environnement interprete0(Program prog) {
@@ -65,4 +67,20 @@ public class Interpretes {
         return eq.unify(env);
         
     }
+    
+    
+    public static Environnement choose(int n, Environnement env, DeclGoal but, List<Decl> regles) throws Exception {
+    	for(Decl dec:regles) {
+    		DeclAssertion fait = (DeclAssertion)dec;
+    		if(fait.getHead().getSymbol().equals(but.getPredicates().get(0).getSymbol())) {
+    			DeclRename visitor = new DeclRename(n);
+    			DeclAssertion faitPrim = visitor.visit(fait);
+    	        Equations eq = new Equations();
+                eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(but.getPredicates().get(0),but.getPosition()));
+    			return eq.unify(env);
+    		}
+    	}
+    	throw new Exception(" aucune règle ne permet de faire l’unification");
+    }
+    
 }
