@@ -55,11 +55,13 @@ public class Interpretes {
             }
         }
         for(DeclGoal but:buts) {
-            for(DeclAssertion fait:faits) {
-                if(fait.getHead().getSymbol().equals(but.getPredicates().get(0).getSymbol())) {
-                    eq.add(new TermPredicate(fait.getHead(),fait.getPosition()),new TermPredicate(but.getPredicates().get(0),but.getPosition()));
+        	for(Predicate p:but.getPredicates()) {
+        		for(DeclAssertion fait:faits) {
+                    if(fait.getHead().getSymbol().equals(p.getSymbol())) {
+                        eq.add(new TermPredicate(fait.getHead(),fait.getPosition()),new TermPredicate(p,p.getPosition()));
+                    }
                 }
-            }
+        	}
         }
         Environnement env = new Environnement();
         return eq.unify(env);   
