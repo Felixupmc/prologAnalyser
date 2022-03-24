@@ -20,15 +20,47 @@ Référez-vous au fichier `README.md` de chaque répertoire pour plus d'informat
 
 # Jalon 1
 
-Jalon non fini. 
-Je mettrai à jour les commentaires au fur et à mesure de l'évolution du jalon.
-
 ## exécution et tests
-* L'exécution doit donner une sortie claire et bien organisée. Pour chaque question : donnez un intitulé, dire ce qui est testé, le résultat attendu, le résultat effectivement calculé.
+* Le code compile et s'exécute sans erreur.
+* Attention : le résultat affiché n'est pas la substitution attendue!
 
 ## qualité du code
-*  Utilisation partiellement correcte de visiteur. OccurCheck contient des tests instanceof, or instanceof est inutile dans un visiteur bien construit (la liaison dynamique se charge d'exécuter le code dépendant du type).
-* Écrivez des commentaire : en-tête décrivant chaque fichier, documentation de chaque méthode (éventuellement en Javadoc), commentaires sur les parties du code les plus importantes ou les plus complexes.
+* Attention : vérifiez votre méthode unify, elle ne semble pas respecter ce qui est demandé. Elle doit parcourir récursivement les expressions à unifier. Elle doit signaler une exception en cas d'unification impossible (prédicats de symbole ou de nombre d'arguments différents).
+* Un peu de commentaires dans le code, mais il en faut plus. Donnez plus de détails sur l'unification, qui est la partie la plus compliquée.
 
 ## rapport de Jalon
-* Rapport non écrit.
+* Description détaillée des classes, des structures de données et des patterns.
+* Pas de description des tests.
+* Pas d'explication sur comment lancer le Jalon.
+* Pas de discussion sur l'efficacité.
+
+
+# Jalon 2
+
+## exécution et tests
+
+* Pas de test pour interprete1 et interprete2.
+
+## qualité du code
+
+* Petite erreur dans interprete2 : chaque DeclGoal doit être résolu dans son environnement indépendant.
+
+## rapport de Jalon
+
+Mêmes remarques que pour le rapport de Jalon 1 : il manque la description des tests et de l'exécution. 
+
+
+# Jalon 3
+
+## exécution et tests
+
+* Pas de test sur interprète3. Pas de fichier exécutable Jalon3.
+
+## qualité du code
+
+* choose doit prendre un seul prédicat but, pas un DeclGoal.
+* appel à rename manquant
+
+## rapport de Jalon
+
+Rapport de Jalon non encore écrit.
