@@ -81,8 +81,9 @@ public class Interpretes {
                     DeclAssertion faitPrim = visitor.visit(fait);
                     Equations eq = new Equations();
                     eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(p,p.getPosition()));
-                    env.putAll(eq.unify(env));
-                    return fait.getPredicates();//TODO : rename all predicates
+                    env=eq.unify(env);
+
+                    return (List<Predicate>)((DeclAssertion) fait.accept(new DeclRename(n))).getPredicates();
                 }
         	}
         }
@@ -94,7 +95,9 @@ public class Interpretes {
     	List<Predicate> lp;
     	int n=0;
     	while (!goals.isEmpty()) {
-    		lp = choose(n++, env, goals.remove(0), rules);
+    		System.out.println("choose("+(n+1)+",env, "+goals+","+rules);
+    		lp = choose(++n, env, goals.remove(0), rules);
+    		System.out.println(lp);
     		if (!lp.isEmpty()) 
     			goals.add(new DeclGoal(lp, lp.get(0).getPosition()));
     	}
@@ -116,5 +119,6 @@ public class Interpretes {
     	return solve(buts, faits);
     }
     
+   
     
 }
