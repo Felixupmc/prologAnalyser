@@ -45,7 +45,7 @@ public class Interpretes {
     public static Environnement interprete2(Program prog) {
         List<DeclAssertion> faits = new ArrayList<DeclAssertion>();
         List<DeclGoal> buts = new ArrayList<DeclGoal>();
-        Equations eq = new Equations();
+        List<Equations> leq = new ArrayList<Equations>();
         for(Decl dec:prog.getDeclarations()) {
             if(dec instanceof DeclAssertion) {
                 faits.add((DeclAssertion)dec);
@@ -56,15 +56,21 @@ public class Interpretes {
         }
         for(DeclGoal but:buts) {
         	for(Predicate p:but.getPredicates()) {
+        		Equations eq = new Equations();
         		for(DeclAssertion fait:faits) {
                     if(fait.getHead().getSymbol().equals(p.getSymbol())) {
                         eq.add(new TermPredicate(fait.getHead(),fait.getPosition()),new TermPredicate(p,p.getPosition()));
+                        break;
                     }
                 }
+        		leq.add(eq);
         	}
         }
         Environnement env = new Environnement();
-        return eq.unify(env);   
+        for (Equations e : leq) {
+			env.putAll(e.unify(new Environnement()));
+		}
+        return env;
     }
     
     public static List<Predicate> choose(int n, Environnement env, DeclGoal but, List<DeclAssertion> regles) throws Exception {
