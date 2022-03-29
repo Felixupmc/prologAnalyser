@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pcomp.prolog.ast.Program;
+import pcomp.prolog.ast.Term;
+import pcomp.prolog.ast.TermPredicate;
+import pcomp.prolog.ast.TermVariable;
 import pcomp.prolog.parser.PrologParser;
 import pcomp.prolog.ast.Decl;
 import pcomp.prolog.ast.DeclAssertion;
@@ -47,17 +50,31 @@ public class Main {
 		for (Decl d : j2p1.getDeclarations()) {
 			System.out.println(d.accept(new DeclRename(1)));
 		}
-		
+		// test Q.2.3
+		System.out.println("\ntests Q.2.3 :");
+		Program p_2_3 = PrologParser.parseString("r(X,Y,h(Z)).q(Z).p(Z,h(Z,W),f(W)).?- p(f(X),h(Y,f(a)),Y),q(f(W)),r(Y,Y,h(Y)).");
+		System.out.println(Interpretes.interprete2(p_2_3));
 		// test Q.3.2
 		System.out.println("\ntests Q.3.2 :");
-		Program p = PrologParser.parseString("p(Z,h(Z,W),f(W)) :- r(X,XX),q(XX).?- p(f(X),h(Y,a),Y),q(a).");
+		Program p = PrologParser.parseString("p(Z,h(Z,W),f(W)) :- r(X,XX),q(XX).r(F,FF).q(G,GG).?- p(f(X),h(Y,a),Y),q(a).");
 		List<DeclAssertion> l = new ArrayList<DeclAssertion>();
 		l.add((DeclAssertion) p.getDeclarations().get(0));
 		Environnement e = new Environnement();
-		List<Predicate> res = Interpretes.choose(1, e, (DeclGoal) p.getDeclarations().get(1), l);
+		List<Predicate> res = Interpretes.choose(1, e, (DeclGoal) p.getDeclarations().get(3), l);
 		System.out.println(p);
 		System.out.println(res);
 		System.out.println(e);
-		
+		System.out.println(Interpretes.interprete3(p));
+		//TEST TEST TEST TEST TEST TEST TEST
+		System.out.println("\nTEST TEST TEST");
+		List<Predicate> testpred = new ArrayList<>();
+		List<Term> testargs = new ArrayList<>();
+		testargs.add(new TermPredicate(new Predicate("church", null), null));
+		testargs.add(new TermPredicate(new Predicate("worsley", null), null));
+		testpred.add(new Predicate("descendant", testargs, null));
+		DeclGoal dec = new DeclGoal(testpred, null);
+		p3.getDeclarations().add(dec);
+		System.out.println(p3);
+		System.out.println(Interpretes.interprete3(p3));
 	}
 }
