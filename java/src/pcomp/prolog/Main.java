@@ -60,7 +60,7 @@ public class Main {
 		List<DeclAssertion> l = new ArrayList<DeclAssertion>();
 		l.add((DeclAssertion) p.getDeclarations().get(0));
 		Environnement e = new Environnement();
-		List<Predicate> res = Interpretes.choose(1, e, (DeclGoal) p.getDeclarations().get(3), l);
+		List<Predicate> res = Interpretes.choose(1, e, ((DeclGoal)(p.getDeclarations().get(3))).getPredicates().get(0), l);
 		System.out.println(p);
 		System.out.println(res);
 		System.out.println(e);

@@ -79,7 +79,7 @@ public class Interpretes {
 	            DeclRename visitor = new DeclRename(n);
 	            DeclAssertion faitPrim = visitor.visit(fait);
 	            Equations eq = new Equations();
-	            eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(p,p.getPosition()));
+	            eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(but,but.getPosition()));
 	            env=eq.unify(env);
 	
 	            return (List<Predicate>)((DeclAssertion) fait.accept(new DeclRename(n))).getPredicates();
