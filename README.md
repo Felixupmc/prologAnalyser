@@ -39,11 +39,12 @@ Référez-vous au fichier `README.md` de chaque répertoire pour plus d'informat
 
 ## exécution et tests
 
-* Pas de test pour interprete1 et interprete2.
+* Pas de test pour interprete1 ~~et interprete2.~~ Un test pour `interprete2` a été ajouté dans Main.
 
 ## qualité du code
 
-* Petite erreur dans interprete2 : chaque DeclGoal doit être résolu dans son environnement indépendant.
+* ~~Petite erreur dans interprete2 : chaque DeclGoal doit être résolu dans son environnement indépendant.~~ C'est maintenant corrigé.
+
 
 ## rapport de Jalon
 
@@ -54,11 +55,13 @@ Mêmes remarques que pour le rapport de Jalon 1 : il manque la description des t
 
 ## exécution et tests
 
-* Pas de test sur interprète3. Pas de fichier exécutable Jalon3.
+* ~~Pas de test sur interprete3. Pas de fichier exécutable Jalon3.~~
+Début de test d'`interpete3` dans Main.
+Il est néanmoins demandé de fournir au moins 3 tests, dans des fichiers source Prolog chargés avec `PrologParser.parseFile`.
 
 ## qualité du code
 
-* choose doit prendre un seul prédicat but, pas un DeclGoal.
+* `choose` doit prendre un seul prédicat but, pas un `DeclGoal`.
 * appel à rename manquant
 
 ## rapport de Jalon
