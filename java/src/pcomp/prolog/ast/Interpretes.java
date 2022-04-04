@@ -73,24 +73,23 @@ public class Interpretes {
         return env;
     }
     
-    public static List<Predicate> choose(int n, Environnement env, DeclGoal but, List<DeclAssertion> regles) throws Exception {
+    public static List<Predicate> choose(int n, Environnement env, Predicate but, List<DeclAssertion> regles) throws Exception {
         for(DeclAssertion fait:regles) {
-        	for(Predicate p:but.getPredicates()) {
-        		if(fait.getHead().getSymbol().equals(p.getSymbol())) {
-                    DeclRename visitor = new DeclRename(n);
-                    DeclAssertion faitPrim = visitor.visit(fait);
-                    Equations eq = new Equations();
-                    eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(p,p.getPosition()));
-                    env=eq.unify(env);
-
-                    return (List<Predicate>)((DeclAssertion) fait.accept(new DeclRename(n))).getPredicates();
-                }
-        	}
+        	if(fait.getHead().getSymbol().equals(but.getSymbol())) {
+	            DeclRename visitor = new DeclRename(n);
+	            DeclAssertion faitPrim = visitor.visit(fait);
+	            Equations eq = new Equations();
+	            eq.add(new TermPredicate(faitPrim.getHead(),faitPrim.getPosition()),new TermPredicate(p,p.getPosition()));
+	            env=eq.unify(env);
+	
+	            return (List<Predicate>)((DeclAssertion) fait.accept(new DeclRename(n))).getPredicates();
+            }
+        	
         }
         throw new Exception(" aucune règle ne permet de faire l’unification");
     }
     
-    public static Environnement solve (List<DeclGoal> goals, List<DeclAssertion> rules) throws Exception {
+    public static Environnement solve (List<Predicate> goals, List<DeclAssertion> rules) throws Exception {
     	Environnement env = new Environnement();
     	List<Predicate> lp;
     	int n=0;
@@ -99,7 +98,7 @@ public class Interpretes {
     		lp = choose(++n, env, goals.remove(0), rules);
     		System.out.println(lp);
     		if (!lp.isEmpty()) 
-    			goals.add(new DeclGoal(lp, lp.get(0).getPosition()));
+    			goals.addAll(lp);
     	}
     	if (env.isEmpty())
     		throw new Exception("aucun environnement existe");
@@ -108,12 +107,12 @@ public class Interpretes {
 
     public static Environnement interprete3(Program prog) throws Exception {
 		List<DeclAssertion> faits = new ArrayList<DeclAssertion>();
-		List<DeclGoal> buts = new ArrayList<DeclGoal>();
+		List<Predicate> buts = new ArrayList<>();
     	for (Decl d : prog.getDeclarations()) {
     		if (d instanceof DeclAssertion) {
     			faits.add((DeclAssertion) d);
     		} else if (d instanceof DeclGoal) {
-    			buts.add((DeclGoal) d);
+    			buts.addAll(((DeclGoal) d).getPredicates());
     		}
     	}
     	return solve(buts, faits);
