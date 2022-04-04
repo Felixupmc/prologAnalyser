@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Context {
-	public final List<DeclGoal> goals;
+	public final List<Predicate> goals;
 	public final List<DeclAssertion> rules;
 	public final Environnement env;
 	
-	public Context(List<DeclGoal> goals, List<DeclAssertion> rules, Environnement env) {
+	public Context(List<Predicate> goals, List<DeclAssertion> rules, Environnement env) {
 		this.goals=new ArrayList<>();
 		this.rules=new ArrayList<>();
 		this.env=new Environnement();
