@@ -94,9 +94,7 @@ public class Interpretes {
     	List<Predicate> lp;
     	int n=0;
     	while (!goals.isEmpty()) {
-    		System.out.println("choose("+(n+1)+",env, "+goals+","+rules);
     		lp = choose(++n, env, goals.remove(0), rules);
-    		System.out.println(lp);
     		if (!lp.isEmpty()) 
     			goals.addAll(lp);
     	}
