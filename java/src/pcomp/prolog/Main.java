@@ -79,7 +79,7 @@ public class Main {
 		System.out.println(Interpretes.interprete3(p3));
 		//TEST TEST TEST TEST TEST TEST TEST
 		System.out.println("\nTEST TEST TEST");
-		p = PrologParser.parseString("p(X):-q(X).p(X):-r(X).q(a).r(b).?-p(b),p(a).");
+		p = PrologParser.parseString("p(X):-q(X).p(X):-r(X).q(a).r(b).?-p(b).");
 		testpred = new ArrayList<>();
 		testargs = new ArrayList<>();
 		System.out.println(p);

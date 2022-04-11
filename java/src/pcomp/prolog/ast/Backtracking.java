@@ -17,9 +17,7 @@ public class Backtracking {
 				try {
 					if (fait.getPredicates().isEmpty()) {
 						Predicate head = fait.getHead();
-						Equations eq = new Equations();
-						eq.add(new TermPredicate(but, but.getPosition()), new TermPredicate(head, head.getPosition()));
-						env=eq.unify(env);
+						
 						break; //on a trouvé la solution a ce but
 					}
 					//on resouds les predicats a droite du fait
@@ -28,6 +26,8 @@ public class Backtracking {
 					
 				} catch (Exception e) {
 					env = context.env;
+					goals = context.goals;
+					rules = context.rules;
 					continue;
 				}
 			}

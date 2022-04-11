@@ -98,4 +98,5 @@ public class Predicate {
 		buf.append(")");
 		return buf.toString();
 	}
+	
 }
