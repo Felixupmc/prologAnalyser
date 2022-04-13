@@ -61,9 +61,19 @@ Il est néanmoins demandé de fournir au moins 3 tests, dans des fichiers source
 
 ## qualité du code
 
-* `choose` doit prendre un seul prédicat but, pas un `DeclGoal`.
-* appel à rename manquant
+* ~~choose doit prendre un seul prédicat but, pas un DeclGoal.~~
+* ~~appel à rename manquant~~ `choose` a été corrigé
 
 ## rapport de Jalon
 
 Rapport de Jalon non encore écrit.
+
+
+# Jalon 4
+
+* Compile, mais l'exécution du test ne donne pas le résultat attendu.
+* Implantation du `Contexte` correcte.
+* `Journal` devrait contenir une liste de `Contexte`, pas une liste de listes de déclarations.
+* `Backtracking` incorrect. Il doit utiliser un seul journal dans tous les appels à `solve`. Il ne doit pas s'appeler récursivement, mais itérer sur le journal tant qu'il reste des choix non faits.
+* Un seul test est fourni ; l'énoncé demande d'autres tests.
+* Rapport de Jalon non encore écrit.
