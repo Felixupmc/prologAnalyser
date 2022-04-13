@@ -15,6 +15,7 @@ import pcomp.prolog.ast.Term;
 import pcomp.prolog.ast.TermPredicate;
 import pcomp.prolog.ast.TermVariable;
 import pcomp.prolog.parser.PrologParser;
+import pcomp.prolog.ast.Backtracking;
 import pcomp.prolog.ast.Decl;
 import pcomp.prolog.ast.DeclAssertion;
 import pcomp.prolog.ast.DeclGoal;
@@ -76,5 +77,13 @@ public class Main {
 		p3.getDeclarations().add(dec);
 		System.out.println(p3);
 		System.out.println(Interpretes.interprete3(p3));
+		//TEST TEST TEST TEST TEST TEST TEST
+		System.out.println("\nTEST TEST TEST");
+		p = PrologParser.parseString("p(X):-q(X).p(X):-r(X).q(a).r(b).?-p(b).");
+		testpred = new ArrayList<>();
+		testargs = new ArrayList<>();
+		System.out.println(p);
+		System.out.println(Interpretes.interprete3(p));
+		System.out.println(Backtracking.interprete4(p));
 	}
 }
