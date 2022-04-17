@@ -16,6 +16,9 @@ public class Equations {
 	}
 	
 	public boolean add(Term left, Term right) {
+		//ajout d'une equation au system
+		//de la forme "Term[2] = {left,right}" tel que l'equation représenté est "left = right"
+		
 		Term[] equation = new Term[2];
 		equation[0] = left;
 		equation[1] = right;
@@ -42,8 +45,13 @@ public class Equations {
 	}
 	
 	
-	//les regles de transformation pour l'unification
+	
+	//=====================================================================
+	//les regles de transformation pour l'unification :
+	
 	public boolean effacer() {
+		//si les deux termes sont egaux, on enleve cette equation du systeme
+		
 		List<Term[]> toRemove = new ArrayList<Term[]>();
 		
 		for (Term[] equation : system) {
@@ -65,6 +73,8 @@ public class Equations {
 	}
 	
 	public boolean orienter() {
+		//Pour inversé l'orientation d'une equation si right est une variable et left ne l'est pas
+		
 		List<Term[]> toRemove = new ArrayList<Term[]>();
 		for (Term[] equation : system) {
 			Term left  = equation[0];
@@ -90,10 +100,13 @@ public class Equations {
 	}
 	
 	public boolean decomposer() {
+		//Si une des equations est de la forme p(...)=p(...) pour tout p, alors on décompose les egalités de leurs parametres
+
 		boolean changesMade = false;
 		List<Term[]> res = new ArrayList<Term[]>();
 		
 		for (Term[] equation : system) {
+			//Sauvegarde de l'equation au depart pour voir si il y a eu des changements a la fin de la boucle
 			Term left = equation[0];
 			Term right = equation[1];
 			//si les deux termes sont deux memes predicat
@@ -122,6 +135,8 @@ public class Equations {
 	}
 	
 	public boolean remplacer(Environnement env) {
+		//on parcours le system et lorsqu'on trouve une variable qui apparait dans l'environement, on la substitue
+
 		boolean changesMade = false;
 		
 		for (int t=0; t<system.size(); t++) {
@@ -139,12 +154,15 @@ public class Equations {
 	
 	
 	public boolean ajoutSubst(Environnement env) throws OccurCheckException {
+		//fonction pour ajouter notre system à l'environement
+		
 		boolean changesMade = false;
 		
 		for (Term[] equation : system) {
 			Term left = equation[0];
 			Term right = equation[1];
 			
+			//On ajoute la variable selement si elle n'etais pas deja dans l'environement
 			if (left instanceof TermVariable && !env.contains(left)) {
 				if (right.accept(new OccurCheck((TermVariable) left))) {
 					throw new OccurCheckException("OccurcheckException : "+equation, (TermVariable) left);
@@ -153,26 +171,36 @@ public class Equations {
 				changesMade = true;
 			}
 		}
+		//On retourne true si on a modifié l'environement, false sinon
 		return changesMade;
 	}
 	
 	public Environnement unify(Environnement env) {
+		//si le systeme est vide on retourne l'environement de depart
 		if (system.isEmpty()) {
 			return env;
 		}
-
+		
+		//variable qui determine si un changement a été effectué sur l'environement lors de la fonction
+		//A la fin de notre fonction, cette variable nous sert de condition d'arret de la récursion
 		boolean changesMade = false;
+		
+		// 1 : remplacement
 		remplacer(env);
 		
+		// 2 : Décomposition
 		if (!changesMade) {
 			changesMade = decomposer();
 			
+		// 3 : Effacement
 		}if (!changesMade) {
 			changesMade = effacer();
-			
+		
+		// 4 : Orientation
 		}if (!changesMade) {
 			changesMade = orienter();
-			
+		
+		//Si il n'y a pas eu de changement, fin de la récurtion, on ajoute à l'environement le system grace a la fonction ajoutSubst
 		}if (!changesMade) {
 			try {
 				changesMade = ajoutSubst(env);
@@ -181,6 +209,7 @@ public class Equations {
 			}
 		}
 		
+		//Si il y a eu des changements, on rappelle unify
 		if (changesMade) {
 			return unify(env);
 		}else {
