@@ -6,7 +6,7 @@ import java.util.List;
 
 
 public class Journal {
-	private List<List<DeclAssertion>> stack;
+	private List<Context> stack;
 	private int size;
 	
 	Journal() {
@@ -14,29 +14,12 @@ public class Journal {
 		size=0;
 	}
 	
-	Journal(List<Predicate> goals, List<DeclAssertion> rules) {
-		/*construit le journal permettant de résoudre les buts
-		 *selon les règles passées en argument*/
-		stack = new ArrayList<>();
-		size=0;
-		for (Predicate goal : goals) {
-			List<DeclAssertion> l = new ArrayList<>();
-			for(DeclAssertion rule : rules) {
-				Predicate head = rule.getHead();
-				if (!head.getSymbol().equals(goal.getSymbol()) || head.getArguments().size()!=goal.getArguments().size()) continue;
-				l.add(rule);
-			}
-			put(l);
-		}
-		reverse();
-	}
-	
-	public List<DeclAssertion> pop() {
+	public Context pop() {
 		size--;
 		return stack.remove(size);
 	}
 	
-	public boolean put(List<DeclAssertion> object) {
+	public boolean put(Context object) {
 		if (stack.add(object)) {
 			size++;
 			return true;
